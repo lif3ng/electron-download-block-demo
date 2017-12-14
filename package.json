@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lif3ng/electron-download-block-dome.git"
+    "url": "git+https://github.com/lif3ng/electron-download-block-demo.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/lif3ng/electron-download-block-dome/issues"
+    "url": "https://github.com/lif3ng/electron-download-block-demo/issues"
   },
-  "homepage": "https://github.com/lif3ng/electron-download-block-dome#readme",
+  "homepage": "https://github.com/lif3ng/electron-download-block-demo#readme",
   "devDependencies": {
     "electron": "~1.7.8"
   }

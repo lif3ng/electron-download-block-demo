@@ -2,14 +2,38 @@ const electron = require('electron')
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
+const { BrowserWindow, shell, dialog } = electron
 
 const path = require('path')
 const url = require('url')
+const fs = require('fs')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
+
+const checkFileExist = (fullpath) => (
+  new Promise((resolve) => {
+    fs.exists(fullpath, (isExists) => {
+      resolve(isExists)
+    })
+  })
+)
+
+const downloadDialog = () => (
+  new Promise((resolve) => {
+    dialog.showMessageBox(mainWindow, {
+      type: 'question',
+      message: 'File already exists',
+      buttons: ['open directory', 'download again']
+    }, (index) => {
+      if(index === 1)
+        resolve('new')
+      else
+        resolve('open')
+    })
+  })
+)
 
 function createWindow () {
   // Create the browser window.
@@ -22,9 +46,29 @@ function createWindow () {
     slashes: true
   }))
 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.session.on('will-download', async (event, item) => {
+      const dirpath = app.getAppPath();
+      const filename = item.getFilename();
+      const fullpath = path.resolve(dirpath, filename)
+      console.log(fullpath)
+      const fileExists = checkFileExist(fullpath)
+      if (fileExists) {
+        const method = await downloadDialog();
+        if(method === 'new'){
+          fullpath = `${fullpath}-x`
+          item.setSavePath(fullpath)
+        } else {
+          item.cancel()
+        }
+      } else {
+        item.setSavePath(fullpath)
+      }
 
+      item.once('done', (event, state) => {
+        console.log('-------done------', event, state)
+        shell.showItemInFolder(fullpath);
+      })
+  })
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
@@ -55,3 +99,4 @@ app.on('activate', function () {
     createWindow()
   }
 })
+
