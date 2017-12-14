@@ -14,6 +14,7 @@ let mainWindow
 
 const checkFileExist = (fullpath) => (
   new Promise((resolve) => {
+    console.log('fullpath in checkFileExist', fullpath)
     fs.exists(fullpath, (isExists) => {
       resolve(isExists)
     })
@@ -51,9 +52,10 @@ function createWindow () {
       const filename = item.getFilename();
       const fullpath = path.resolve(dirpath, filename)
       console.log(fullpath)
-      const fileExists = checkFileExist(fullpath)
+      const fileExists = await checkFileExist(fullpath)
       if (fileExists) {
         const method = await downloadDialog();
+        console.log({ method })
         if(method === 'new'){
           fullpath = `${fullpath}-x`
           item.setSavePath(fullpath)
