@@ -1,0 +1,22 @@
+{
+  "name": "electron-download-block-dome",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lif3ng/electron-download-block-dome.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lif3ng/electron-download-block-dome/issues"
+  },
+  "homepage": "https://github.com/lif3ng/electron-download-block-dome#readme",
+  "devDependencies": {
+    "electron": "~1.7.8"
+  }
+}
